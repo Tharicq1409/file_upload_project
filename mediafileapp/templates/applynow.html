@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+
+<body>
+    <!--
+    <header>
+        
+        <h1>Netinfo</h1>
+    </header>
+-->
+    <h1>Apply Now</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="right-form">
+            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+            {{ form.first_name }}
+
+            <label for="{{ form.last_name.id_for_label  }}">Last Name</label>
+            {{ form.last_name }}
+
+            <label for="{{ form.city.id_for_label  }}">City</label>
+            {{ form.city }}
+
+            <label for="{{ form.state.id_for_label  }}">State</label>
+            {{ form.state }}
+
+            <label for="{{ form.zip_code.id_for_label  }}">Zip Code</label>
+            {{ form.zip_code }}
+
+            <label for="{{ form.street_address.id_for_label }}">Street address</label>
+            {{ form.street_address }}
+        </div>
+
+        <div class="form-column">
+            <label for="{{ form.mobile_number.id_for_label  }}">Mobile</label>
+            {{ form.mobile_number }}
+            
+            <label for="{{ form.email.id_for_label  }}">Email</label>
+            {{ form.email }}
+
+            <label for="{{ form.employement_status.id_for_label  }}">Employement Status</label>
+            {{ form.employement_status }}
+
+            <br>
+            <br>
+
+            <label for="{{ form.year_of_passing.id_for_label  }}">Year of Passing</label>
+            {{ form.year_of_passing }}
+
+            <br>
+            <br>
+
+            <label for="{{ form.resume.id_for_label  }}">Upload your resume</label>
+            {{ form.resume }}
+            <br>
+            <br>
+
+            <label for="{{ form.skills.id_for_label  }}">Skill Set</label>
+            {{ form.skills }}
+        </div>
+        <br>
+        <div class="buttons-class">
+            <button type="submit">Submit</button>
+            <button id="reloadButton">Reload</button>
+        </div>
+        
+    </form>
+
+    <script>
+        $(function () {
+            $("#id_skills").autocomplete({
+                source: "{% url 'autocomplete' %}",
+                minLength: 1,
+                select: function (event, ui) {
+                    event.preventDefault();
+                    var existingText = this.value.split(',').slice(0, -1).join(',');
+                    this.value = existingText + (existingText.length > 0 ? ',' : '') + ui.item.value;
+                }
+            });
+        });
+
+        $(function () {
+            $("#id_city").autocomplete({
+                source: "{% url 'city-autocomplete' %}",
+                minLength: 3,
+            });
+        });
+
+        $(function () {
+            $("#id_state").autocomplete({
+                source: "{% url 'state-autocomplete' %}",
+                minLength: 3,
+            });
+        });
+
+        $("#reloadButton").on("click", function () {
+            location.reload(true);  // Reload the page
+        });
+
+    </script>
+    
+</body>
+
+</html>
